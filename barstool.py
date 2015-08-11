@@ -18,7 +18,29 @@ data = json.loads(response.read())
 i=0
 while i < len(data[u'posts']):
 	timeOfPost=datetime.datetime.strptime( str(data[u'posts'][i][u'date'])[:-6],"%Y-%m-%d %H:%M:%S" )
-	print '\n'+str(i+1)+'.) '+HTMLEntitiesToUnicode(str(data[u'posts'][i][u'title']))+' - '+str(timeOfPost.month)+'/'+str(timeOfPost.day)+'/'+str(timeOfPost.year)+' :: ' + str(timeOfPost.hour)+':'+str(timeOfPost.minute)+'.'+str(timeOfPost.second)+'\n'+str(data[u'posts'][i][u'url'])
+	if len(str(timeOfPost.minute))<2:
+		newMinute='0'+str(timeOfPost.minute)
+	else:
+		newMinute=str(timeOfPost.minute)
+	if len(str(timeOfPost.second))<2:
+		newSecond='0'+str(timeOfPost.second)
+	else:
+		newSecond=str(timeOfPost.second)
+
+	if timeOfPost.hour>12:
+		newHour=str(timeOfPost.hour-12)
+		meridiem='PM'
+		#Add pm var flag here and append to time	
+	else:
+		newHour=str(timeOfPost.hour)
+		if (timeOfPost.hour==12):
+			meridiem='PM'
+		else:
+			meridiem='AM'
+	
+
+
+	print '\n'+str(i+1)+'.) '+HTMLEntitiesToUnicode(str(data[u'posts'][i][u'title']))+' - '+str(timeOfPost.month)+'/'+str(timeOfPost.day)+'/'+str(timeOfPost.year)+' :: ' + str(newHour)+':'+str(newMinute)+'.'+str(newSecond)+str(meridiem)+'\n'+str(data[u'posts'][i][u'url'])
 	i+=1
 
 print '\n'
